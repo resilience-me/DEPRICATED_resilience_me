@@ -1,3 +1,9 @@
+// Here´s a script that looks at a ripple-account, and generates a list with all 
+// accounts that are connected to that account through a hierarchical line of debt. 
+// It creates a list of all accounts that have issued IOUs to that account, and does 
+// the same for each of those down-stream accounts, and it repeats that procedure until 
+// it reaches the end all lineages in that IOU.  
+
 
 var Remote = require('ripple-lib').Remote;
 
@@ -28,7 +34,7 @@ var remote = new Remote({
 
 var ACCOUNTS = [];  // hold all account that had been passed.
 
-var SWAMP = {
+var SWARM = {
               account: START_ADDRESS,
               balance: 0,
               level: 0,
@@ -37,14 +43,14 @@ var SWAMP = {
 
 // ================== functions =====================================
 
-function get_lines(swamp, callback) {
+function get_lines(swarm, callback) {
 
   var request = remote.request_account_lines({
-    account: swamp.account,
+    account: swarm.account,
     ledger: LEDGER_INDEX
   });
 
-  console.log('getting lines for', swamp.account, ' level:', swamp.level);
+  console.log('getting lines for', swarm.account, ' level:', swarm.level);
   request.callback(function(err, res) {
     if (err) {console.log('err:',err); return;}
 
@@ -54,7 +60,7 @@ function get_lines(swamp, callback) {
     lines = lines.filter(function(element){ return (element.balance < 0 && element.currency === IOU); });
 
     // if no more lines, mark [END]
-    if (lines.length == 0) {swamp.lines = "[END]"; if (typeof callback == 'function') {callback()}; return;}
+    if (lines.length == 0) {swarm.lines = "[END]"; if (typeof callback == 'function') {callback()}; return;}
 
     lines.sort(function (a,b) { return parseFloat(b.balance) - parseFloat(a.balance) } );
 
@@ -62,15 +68,15 @@ function get_lines(swamp, callback) {
           var account = lines[i].account;
           var balance = lines[i].balance
 
-          swamp.lines[account] = { 
+          swarm.lines[account] = { 
                                    account: account,
                                    balance: balance,
-                                   level: swamp.level +1,
+                                   level: swarm.level +1,
                                    lines: {}
                                   }
           if (ACCOUNTS.indexOf(account) > -1) {
                // repeated account, mark as [circular] end.
-               swamp.lines[account].lines = "[CIRCULAR]";
+               swarm.lines[account].lines = "[CIRCULAR]";
                lines.splice(i,1);
           } else {
                ACCOUNTS.push(account);      
@@ -80,7 +86,7 @@ function get_lines(swamp, callback) {
     // recursion to next-level.
     function next_node(i, callback) {
       var account = lines[i].account;
-      get_lines(swamp.lines[account], function () {  
+      get_lines(swarm.lines[account], function () {  
           i--;
           if (i >= 0 ) {
               next_node(i, callback);
@@ -97,10 +103,10 @@ function get_lines(swamp, callback) {
 
 remote.connect(function() {
   console.log('connected to Ripple-Network.');  
-  get_lines(SWAMP, print_swamp);
+  get_lines(SWARM, print_swarm);
 });
 
-function print_swamp () {
-    var output = JSON.stringify(SWAMP, null, 2);
+function print_swarm () {
+    var output = JSON.stringify(SWARM, null, 2);
     console.log(output);
 }
