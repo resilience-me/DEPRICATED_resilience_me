@@ -1,0 +1,68 @@
+connected to Ripple-Network.
+getting lines for rfCFLzNJYvvnoGHWQYACmJpTgkLUaugLEw  level: 0
+getting lines for rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q  level: 1
+getting lines for rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B  level: 1
+getting lines for r4fsbBVwSNjZd42ywDmbCY3qTRj3F1ZEtF  level: 2
+getting lines for rHXK7KaoGmVDqV11r4Y8VtY349rXYstV9  level: 2
+getting lines for rwuV5xwgSREJeMC1cTR9HR6MNgvh8NhuNe  level: 3
+getting lines for rhmZPqY4Gex3gq3n3DN36G47RaKTmTyFQw  level: 2
+getting lines for rHvF1GRf6qD2oYnstKu9TDcJiuWudaJLjV  level: 3
+{
+  "account": "rfCFLzNJYvvnoGHWQYACmJpTgkLUaugLEw",
+  "balance": 0,
+  "level": 0,
+  "lines": {
+    "rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q": {
+      "account": "rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q",
+      "balance": "526.7195007914474",
+      "level": 1,
+      "lines": "[END]"
+    },
+    "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B": {
+      "account": "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
+      "balance": "730.5339844233227",
+      "level": 1,
+      "lines": {
+        "r4fsbBVwSNjZd42ywDmbCY3qTRj3F1ZEtF": {
+          "account": "r4fsbBVwSNjZd42ywDmbCY3qTRj3F1ZEtF",
+          "balance": "0.0000000004825",
+          "level": 2,
+          "lines": "[END]"
+        },
+        "rHXK7KaoGmVDqV11r4Y8VtY349rXYstV9": {
+          "account": "rHXK7KaoGmVDqV11r4Y8VtY349rXYstV9",
+          "balance": "0.002",
+          "level": 2,
+          "lines": {
+            "rwuV5xwgSREJeMC1cTR9HR6MNgvh8NhuNe": {
+              "account": "rwuV5xwgSREJeMC1cTR9HR6MNgvh8NhuNe",
+              "balance": "1.002",
+              "level": 3,
+              "lines": "[END]"
+            }
+          }
+        },
+        "rhmZPqY4Gex3gq3n3DN36G47RaKTmTyFQw": {
+          "account": "rhmZPqY4Gex3gq3n3DN36G47RaKTmTyFQw",
+          "balance": "0.002",
+          "level": 2,
+          "lines": {
+            "rHvF1GRf6qD2oYnstKu9TDcJiuWudaJLjV": {
+              "account": "rHvF1GRf6qD2oYnstKu9TDcJiuWudaJLjV",
+              "balance": "1.002",
+              "level": 3,
+              "lines": {
+                "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B": {
+                  "account": "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
+                  "balance": "49.5331816150661",
+                  "level": 4,
+                  "lines": "[CIRCULAR]"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
