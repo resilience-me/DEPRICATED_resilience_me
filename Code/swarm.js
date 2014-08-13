@@ -57,7 +57,7 @@ function get_lines(swarm, callback) {
     var lines = res.lines;
 
     // filtering with IOU symbol and negative balance.
-    lines = lines.filter(function(element){ return (element.balance < 0 && element.currency === IOU); });
+    lines = lines.filter(function(element){ return (element.balance > 0 && element.currency === IOU); });
 
     // if no more lines, mark [END]
     if (lines.length == 0) {swarm.lines = "[END]"; if (typeof callback == 'function') {callback()}; return;}
