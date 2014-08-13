@@ -1,12 +1,12 @@
 connected to Ripple-Network.
-getting lines for rfCFLzNJYvvnoGHWQYACmJpTgkLUaugLEw  level: 0
-getting lines for rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q  level: 1
-getting lines for rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B  level: 1
-getting lines for r4fsbBVwSNjZd42ywDmbCY3qTRj3F1ZEtF  level: 2
-getting lines for rHXK7KaoGmVDqV11r4Y8VtY349rXYstV9  level: 2
-getting lines for rwuV5xwgSREJeMC1cTR9HR6MNgvh8NhuNe  level: 3
-getting lines for rhmZPqY4Gex3gq3n3DN36G47RaKTmTyFQw  level: 2
-getting lines for rHvF1GRf6qD2oYnstKu9TDcJiuWudaJLjV  level: 3
+getting lines for rfCFLzNJYvvnoGHWQYACmJpTgkLUaugLEw  USD  level: 0
+getting lines for rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q  USD  level: 1
+getting lines for rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B  USD  level: 1
+getting lines for r4fsbBVwSNjZd42ywDmbCY3qTRj3F1ZEtF  USD  level: 2
+getting lines for rHXK7KaoGmVDqV11r4Y8VtY349rXYstV9  USD  level: 2
+getting lines for rwuV5xwgSREJeMC1cTR9HR6MNgvh8NhuNe  USD  level: 3
+getting lines for rhmZPqY4Gex3gq3n3DN36G47RaKTmTyFQw  USD  level: 2
+getting lines for rHvF1GRf6qD2oYnstKu9TDcJiuWudaJLjV  USD  level: 3
 {
   "account": "rfCFLzNJYvvnoGHWQYACmJpTgkLUaugLEw",
   "balance": 0,
