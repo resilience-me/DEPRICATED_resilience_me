@@ -50,7 +50,7 @@ function get_lines(swarm, callback) {
     ledger: LEDGER_INDEX
   });
 
-  console.log('getting lines for', swarm.account, ' level:', swarm.level);
+  console.log('getting lines for', swarm.account,' ', IOU, '  level:', swarm.level);
   request.callback(function(err, res) {
     if (err) {console.log('err:',err); return;}
 
