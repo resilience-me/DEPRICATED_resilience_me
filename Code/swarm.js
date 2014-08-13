@@ -1,4 +1,4 @@
-// swarm.js looks at a ripple-account, and generates a list with all 
+// looks at a ripple-account, and generates a list with all 
 // accounts that are connected to that account through a hierarchical line of debt. 
 // It creates a list of all accounts that have issued IOUs to that account, and does 
 // the same for each of those down-stream accounts, and repeats that procedure until 
