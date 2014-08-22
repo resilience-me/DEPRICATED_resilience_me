@@ -2,7 +2,7 @@
 // accounts that are connected to that account through a hierarchical line of debt. 
 // It creates a list of all accounts that have issued IOUs to that account, and does 
 // the same for each of those down-stream accounts, and repeats that procedure until 
-// it reaches the end of all lineages in that IOU.  
+// it reaches the end of all lineages in that IOU.
 
 
 var Remote = require('ripple-lib').Remote;
@@ -10,7 +10,7 @@ var Remote = require('ripple-lib').Remote;
 // =======================================================
 
 var IOU = "RES";
-var START_ADDRESS = "rLaKjMvLbrAJwnH4VpawQ6ot9epZqJmbfQ";
+var START_ADDRESS = "rLaKjMvLbrAJwnH4VpawQ6ot9epZqJmbfQ"; //account that recieved the transaction that was taxed
 var LEDGER_INDEX = 'validated'; 
 
 // ================= constants ===========================
