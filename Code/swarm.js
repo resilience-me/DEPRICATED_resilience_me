@@ -10,7 +10,7 @@ var Remote = require('ripple-lib').Remote;
 // =======================================================
 
 var IOU = "RES";
-var START_ADDRESS = "rLaKjMvLbrAJwnH4VpawQ6ot9epZqJmbfQ"; //account that recieved the transaction that was taxed
+var START_ADDRESS = "rLaKjMvLbrAJwnH4VpawQ6ot9epZqJmbfQ";
 var LEDGER_INDEX = 'validated'; 
 
 // ================= constants ===========================
