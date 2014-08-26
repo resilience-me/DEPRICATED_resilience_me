@@ -9,8 +9,8 @@ var Remote = require('ripple-lib').Remote;
 
 // =======================================================
 
-var IOU = "RES";
-var START_ADDRESS = "rLaKjMvLbrAJwnH4VpawQ6ot9epZqJmbfQ";
+var IOU = "XYZ"; // IOU that payed transaction tax
+var START_ADDRESS = "rLaKjMvLbrAJwnH4VpawQ6ot9epZqJmbfQ"; //account that payed transaction tax
 var LEDGER_INDEX = 'validated'; 
 
 // ================= constants ===========================
