@@ -1,4 +1,5 @@
 //lists an accounts outgoing and incoming transactions
+//filter by currency
 
 
 var ripple = require('ripple-lib');
@@ -40,12 +41,14 @@ remote.connect(function() {
                 var timestamp = ripple.utils.toTimestamp(data.transactions[i].tx.date);
                 var date = new Date(timestamp);
 
-                if (tx.TransactionType === 'Payment') {
+                if (tx.TransactionType === 'Payment' && tx.Amount.currency === "RES") {
                     console.log("dateLocale=" + date.toLocaleString());
                     console.log("TransactionResult=" + meta.TransactionResult);
                     console.log("TransactionType=" + tx.TransactionType);
                     console.log("Account=" + tx.Account);
                     console.log("Amount=" + ripple.Amount.from_json(tx.Amount).to_text_full());
+                    console.log("Currency=" + tx.Amount.currency);
+
                     console.log("Destination=" + tx.Destination);
                     console.log("Ledger Index=" + tx.ledger_index);
                 }
