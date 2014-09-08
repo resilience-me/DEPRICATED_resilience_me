@@ -88,25 +88,45 @@ remote.connect(function() {
 
                 if (tx.TransactionType === 'Payment' &&  IOU.indexOf(tx.Amount.currency) > -1 && tx.Destination === params.account) {
                     console.log("Incoming Payment");
+                    console.log("Transaction #" + tx.hash);
                     console.log("Account=" + tx.Account);
                     console.log("Amount=" + tx.Amount.value);
                     console.log("Currency=" + tx.Amount.currency);
                     console.log("Issuer=" + tx.Amount.issuer);
                     console.log("Destination=" + tx.Destination);
                     //================ wallet.taxRate ================
+                    //declare variables
+                    var taxRate;
+                    var tax_amount;
 
+                    //filter by currency
                     if (tx.Amount.currency === IOU1) {
-                       console.log("taxRate=" + wallet[0].taxRate) 
-                    };
+                        taxRate = wallet[0].taxRate;
+                    }
 
                     if (tx.Amount.currency === IOU2) {
-                       console.log("taxRate=" + wallet[1].taxRate) 
-                    };
+                        taxRate = wallet[1].taxRate;
+                    }
             
                     if (tx.Amount.currency === IOU3) {
-                       console.log("taxRate=" + wallet[2].taxRate) 
-                    };
+                        taxRate = wallet[2].taxRate;
+                    }
+                    
+                    //calculate tax_amount
+                       taxRate = parseInt(taxRate, 10) * 0.000000001;
+                       console.log("taxRate=" + taxRate);
+                       tax_amount = taxRate * tx.Amount.value;
+                       console.log("tax_amount=" + tax_amount);
+                       console.log("");
                         
+                    //================ declare_tax ================
+                    console.log("Transaction #" + tx.hash);
+                    console.log("command: declare_tax");
+                    console.log("connecting to resilience.me...");
+                    console.log("sending data...");                    
+                    console.log("COMPLETE");
+                    
+                       
             
                     console.log("");
                     console.log("===========");
