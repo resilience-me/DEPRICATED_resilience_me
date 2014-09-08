@@ -1,6 +1,7 @@
 //lists an accounts incoming transactions
 //for all currencies the account has connected
 //and declares tax for each of transaction
+//slacker-code, mostly to get a working prototype
 
 
 
@@ -120,7 +121,14 @@ remote.connect(function() {
                        console.log("");
                         
                     //================ declare_tax ================
-                    //placeholder code
+                    
+                    //Like anyone can issue IOUs in Ripple, resilience.me lets anyone 
+                    //connect IOUs of any currency to our system.
+                    //resilience.me generates a list of outgoing payments, sign the 
+                    //list of outgoing payments, IF <= (amount * taxRate)
+                    
+                    //connect incoming payments with the resilience network
+                    //(example, haven´t coded yet)
                     console.log("command: declare_tax");
                     console.log("connecting to resilience.me...");
                     console.log("sending data...");                    
