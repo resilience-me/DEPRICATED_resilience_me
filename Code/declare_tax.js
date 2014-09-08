@@ -120,7 +120,7 @@ remote.connect(function() {
                        console.log("");
                         
                     //================ declare_tax ================
-                    console.log("Transaction #" + tx.hash);
+                    //placeholder code
                     console.log("command: declare_tax");
                     console.log("connecting to resilience.me...");
                     console.log("sending data...");                    
