@@ -32,19 +32,13 @@
     ];
     
 //================ create a string with wallet.currency ================
-//this is used to filter taxation data by currencies the user wants to tax
+//this is used to filter taxation data by the currencies that the user wants to tax
 
      var IOUs = "";
 
 for (var ii = 0; ii < wallet.length; ii++) { 
     IOUs = IOUs + wallet[ii].currency + " ";
 }
-
-
-//================ create a variable for the taxation-data ================
-
-
-  
 
 
      
@@ -91,7 +85,6 @@ remote.connect(function() {
    
 
 
-
 //================ first we get an accounts transaction history via the Ripple API ================
 
     remote.request_account_tx(params)
@@ -101,8 +94,8 @@ remote.connect(function() {
 
 //================ now we filter data from the Ripple API.                       
 //================ we want to scan all the transactions we requested from Ripple
-//================ and filter out incoming transactions
-//================ in the currencies that the user wants to tax
+//================ and filter out incoming transactions in 
+//================ the currencies that the user wants to tax
 
         for (var i=0; i < data.transactions.length; i++) {
 
