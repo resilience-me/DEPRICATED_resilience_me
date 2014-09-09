@@ -55,7 +55,17 @@ remote.connect(function() {
     ];
     
     
-   
+     //tax_blob
+     var TAX_BLOB = {
+         transaction_id: {},
+         account: {},
+         amount: {},
+         currency: {},
+         issuer: {},
+         destination: {},
+         taxRate: {},
+         tax_amount: {}
+     };
    
 //================ request account_tx ================
 
@@ -64,6 +74,14 @@ remote.connect(function() {
     remote.request_account_tx(params)
         .on('success', function(data) {
 
+
+                    //create variable
+                    //limit how many transactions to declare_tax for
+                    //transctions in descending order
+                    
+                    var r=0;
+                    
+                    
 
             for (var i=0; i < data.transactions.length; i++) {
 
@@ -81,14 +99,18 @@ remote.connect(function() {
 
 
              
-
-
+   
 
 
 //================ Incoming Payments ================
 
                 if (tx.TransactionType === 'Payment' &&  IOU.indexOf(tx.Amount.currency) > -1 && tx.Destination === params.account) {
+                    
+
+                    
+
                     console.log("Incoming Payment");
+                    
                     console.log("Transaction #" + tx.hash);
                     console.log("Account=" + tx.Account);
                     console.log("Amount=" + tx.Amount.value);
@@ -129,6 +151,34 @@ remote.connect(function() {
                     
                     //connect incoming payments with the resilience network
                     //(example, haven´t coded yet)
+                    
+
+                    TAX_BLOB.transaction_id = tx.hash;
+                    TAX_BLOB.account = tx.Account;
+                    TAX_BLOB.amount = tx.Amount.value;
+                    TAX_BLOB.currency = tx.Amount.currency;
+                    TAX_BLOB.issuer = tx.Amount.issuer;
+                    TAX_BLOB.destination = tx.Destination;
+                    TAX_BLOB.taxRate = taxRate;
+                    TAX_BLOB.tax_amount = tax_amount;
+
+
+                    //this sets how many transactions to declare_tax for
+                    //this is set with the variable r
+                    
+                    
+                    if (r <= 0) {
+                        //send to resilience.me
+                        //these declare_tax objects are sent to resilience.me
+                        //not finished need resilience.me server and resilience.me-lib
+                        var output = JSON.stringify(TAX_BLOB, null, 2);
+                        console.log(output);
+                        
+
+                    }
+                    
+                    r++;
+
                     console.log("command: declare_tax");
                     console.log("connecting to resilience.me...");
                     console.log("sending data...");                    
@@ -149,4 +199,12 @@ remote.connect(function() {
             }
 
         }).request();
+        
+       
+        
+
+
+        
 });
+
+
