@@ -140,41 +140,43 @@ remote.connect(function() {
          TAX_DATA.tax_amount = tax_amount;
 
 //================ if we only want to filter out the first couple of transactions
-//================ set number of transactions with limit variable
+//================ set number of transactions with limit variable (see top)
 //================ all transactions that should be sent to resilience.me-server are added to a TAX_BLOB
 
 
                     if (d <= limit) {
                         TAX_BLOB[d] = TAX_DATA;
-
                     }
-                    
-
-
                     d++;
                     
-                }//end of if() filter-per-taxRate script
-                
-                  
-            }//end of var i loop
+                    
+                    
+                    
+                    
+                    
+            }//end of if() filter-per-taxRate script
+            
+              
+        }//end of var i loop
             
             
             
             
-//================ we now have all the data we need in TAX_BLOB
-//================ this data should be sent to the resilience.me-server
-//================ I will add that script soon
+            
+//======== we now have all the data we need in TAX_BLOB
+//======== this data should be sent to the resilience.me-server
+//======== I will add that script soon
 
                                     
            var output = JSON.stringify(TAX_BLOB, null, 2);
            console.log(output);
-           //send to resilience.me-server.......
+           //send to resilience.me-server (script coming soon)
 
 
 
 
 
-        }).request();//end of Ripple API account_tx request
+   }).request();//end of Ripple API account_tx request
 
                        
                        
