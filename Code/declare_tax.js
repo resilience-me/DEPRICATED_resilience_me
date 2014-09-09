@@ -75,10 +75,8 @@ remote.connect(function() {
         .on('success', function(data) {
 
 
-                    //create variable
                     //limit how many transactions to declare_tax for
-                    //transctions in descending order
-                    
+
                     var r=0;
                     
                     
@@ -108,16 +106,7 @@ remote.connect(function() {
                     
 
                     
-
-                    console.log("Incoming Payment");
-                    
-                    console.log("Transaction #" + tx.hash);
-                    console.log("Account=" + tx.Account);
-                    console.log("Amount=" + tx.Amount.value);
-                    console.log("Currency=" + tx.Amount.currency);
-                    console.log("Issuer=" + tx.Amount.issuer);
-                    console.log("Destination=" + tx.Destination);
-                    //================ wallet.taxRate ================
+//================ wallet.taxRate ================
                     //declare variables
                     var taxRate;
                     var tax_amount;
@@ -137,11 +126,8 @@ remote.connect(function() {
                     
                     //calculate tax_amount
                        taxRate = parseInt(taxRate, 10) * 0.000000001;
-                       console.log("taxRate=" + taxRate);
                        tax_amount = taxRate * tx.Amount.value;
-                       console.log("tax_amount=" + tax_amount);
-                       console.log("");
-                        
+
                     //================ declare_tax ================
                     
                     //Like anyone can issue IOUs in Ripple, resilience.me lets anyone 
@@ -167,28 +153,23 @@ remote.connect(function() {
                     //this is set with the variable r
                     
                     
-                    if (r <= 0) {
+                    if (r <= 4) {
                         //send to resilience.me
                         //these declare_tax objects are sent to resilience.me
                         //not finished need resilience.me server and resilience.me-lib
                         var output = JSON.stringify(TAX_BLOB, null, 2);
                         console.log(output);
-                        
+                        console.log("command: declare_tax");
+                        console.log("connecting to resilience.me...");
+                        console.log("sending data...");                    
+                        console.log("COMPLETE");
+
 
                     }
                     
                     r++;
 
-                    console.log("command: declare_tax");
-                    console.log("connecting to resilience.me...");
-                    console.log("sending data...");                    
-                    console.log("COMPLETE");
-                    
-                       
-            
-                    console.log("");
-                    console.log("===========");
-                    console.log("");
+
                     
                     
 
