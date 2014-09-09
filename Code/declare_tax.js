@@ -1,7 +1,10 @@
-//scans an accounts incoming transactions
-//for all currencies in wallet.currency
-//and declares tax for the latest transaction.
+//================ Resilience.me-client v0.1 ================
 
+//====== scans an accounts incoming transactions      =======
+//====== for all currencies in wallet.currency        =======
+//====== and declares tax for the latest transactions =======
+
+//#CPLEIF
 
 
 
