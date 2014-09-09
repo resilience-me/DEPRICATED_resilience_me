@@ -1,8 +1,6 @@
-//lists an accounts incoming transactions
-//for all currencies the account has connected
-//and declares tax for each of transaction
-//slacker-code, mostly to get a working prototype
-
+//scans an accounts incoming transactions
+//for all currencies in wallet.currency
+//and declares tax for the latest transaction
 
 
 //================ connect to Ripple ================
