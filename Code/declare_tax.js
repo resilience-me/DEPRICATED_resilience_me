@@ -55,7 +55,7 @@ remote.connect(function() {
     ];
     
     
-     //tax_blob
+     //this holds the transaction data that should be connected with resilience.me
      var TAX_BLOB = {
          transaction_id: {},
          account: {},
