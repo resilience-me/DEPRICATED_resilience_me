@@ -36,8 +36,8 @@
 
      var IOUs = "";
 
-for (var ii = 0; ii < wallet.length; ii++) { 
-    IOUs = IOUs + wallet[ii].currency + " ";
+for (var j = 0; j < wallet.length; j++) { 
+    IOUs = IOUs + wallet[j].currency + " ";
 }
 
 
@@ -57,7 +57,7 @@ for (var ii = 0; ii < wallet.length; ii++) {
      var taxRate;
      var tax_amount;
 
-     var r = 0;
+     var d = 0;
      var limit = 10;
      
      var TAX_BLOB = [];
@@ -110,10 +110,10 @@ remote.connect(function() {
 //================ and add taxRate to every [i] transaction that is processed
 
 
-             for (var iii = 0; iii < wallet.length; iii++) { 
+             for (var k = 0; k < wallet.length; k++) { 
     
-                 if (tx.Amount.currency === wallet[iii].currency) {
-                 taxRate = wallet[iii].taxRate;
+                 if (tx.Amount.currency === wallet[k].currency) {
+                 taxRate = wallet[k].taxRate;
                  }
              }    
           
@@ -141,40 +141,40 @@ remote.connect(function() {
 //================ all transactions that should be sent to resilience.me-server are added to a TAX_BLOB
 
 
-                    if (r <= limit) {
-                        TAX_BLOB[r] = TAX_DATA;
+                    if (d <= limit) {
+                        TAX_BLOB[d] = TAX_DATA;
 
                     }
                     
 
 
-                    r++;
+                    d++;
                     
                 }//end of if() filter-per-taxRate script
                 
-                   
-
-
-
-
-
+                  
             }//end of var i loop
+            
+            
+            
             
 //================ we now have all the data we need in TAX_BLOB
 //================ this data should be sent to the resilience.me-server
 //================ I will add that script soon
 
                                     
-                        var output = JSON.stringify(TAX_BLOB, null, 2);
-                        console.log(output);
-                        //send to resilience.me-server.......
+           var output = JSON.stringify(TAX_BLOB, null, 2);
+           console.log(output);
+           //send to resilience.me-server.......
+
+
+
 
 
         }).request();//end of Ripple API account_tx request
 
                        
-
-
+                       
 });//end of remote.connect()
 
                        
