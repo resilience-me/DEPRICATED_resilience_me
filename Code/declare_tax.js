@@ -1,13 +1,17 @@
 //scans an accounts incoming transactions
 //for all currencies in wallet.currency
-//and declares tax for the latest transaction
+//and declares tax for the latest transaction.
 
 
 
 
 //================ Create wallet ================
-//should be encoded with ripple-account secret key
-//taxRate is written in decimal, 0.02 means 2%
+//this is just an example-wallet.
+//actual wallet should be encoded with ripple-account secret key.
+
+//taxRate is written in decimal, 0.02 means 2%.
+
+
 
     var wallet = [
         {
@@ -28,6 +32,7 @@
     ];
     
 //================ create a string with wallet.currency ================
+//this is used to filter taxation data by currencies the user wants to tax
 
      var IOUs = "";
 
@@ -36,27 +41,14 @@ for (var ii = 0; ii < wallet.length; ii++) {
 }
 
 
-//================ BLOB for declare_tax ================
+//================ create a variable for the taxation-data ================
 
 
-     var TAX_BLOB = {
-         transaction_id: {},
-         account: {},
-         amount: {},
-         currency: {},
-         issuer: {},
-         destination: {},
-         taxRate: {},
-         tax_amount: {}
-     };
+  
 
 
-//================ some poignant variables ================
-     var r=0;
-     var taxRate;
-     var tax_amount;
      
-//================ account_tx params ================
+//================ define parameters for the Ripple API ================
 
      
       var params = {
@@ -66,13 +58,21 @@ for (var ii = 0; ii < wallet.length; ii++) {
         'limit': 50
     };
 
+//================ and some other variables ================
+
+     var taxRate;
+     var tax_amount;
+
+     var r = 0;
+     var limit = 10;
+     
+     var TAX_BLOB = [];
 
 
-//================ connect to Ripple ================
+//================ Connect to the Ripple API ================
 
 
 var ripple = require('ripple-lib');
-var util   = require('util');
 
 var remote = new ripple.Remote({
     trace: false,
@@ -92,75 +92,98 @@ remote.connect(function() {
 
 
 
-//================ get an accounts transaction history from ripple ================
+//================ first we get an accounts transaction history via the Ripple API ================
 
     remote.request_account_tx(params)
         .on('success', function(data) {
 
 
 
+//================ now we filter data from the Ripple API.                       
+//================ we want to scan all the transactions we requested from Ripple
+//================ and filter out incoming transactions
+//================ in the currencies that the user wants to tax
 
-
-            for (var i=0; i < data.transactions.length; i++) {
+        for (var i=0; i < data.transactions.length; i++) {
 
                 var tx = data.transactions[i].tx;
+        
+        
+            if (tx.TransactionType === 'Payment' && IOUs.indexOf(tx.Amount.currency) > -1 && tx.Destination === params.account) {
 
 
+//================ we need to add data from the users Resilience.me-Wallet to the Ripple data
+//================ we can use a loop to look up taxRate-values for each currency
+//================ and add taxRate to every [i] transaction that is processed
 
 
-
-
-//================ filter account_tx by incoming payments and wallet.currency ================
-                if (tx.TransactionType === 'Payment' &&  IOUs.indexOf(tx.Amount.currency) > -1 && tx.Destination === params.account) {
-
-
-//================ set taxRate ================
-for (var iii = 0; iii < wallet.length; iii++) { 
+             for (var iii = 0; iii < wallet.length; iii++) { 
     
-    if (tx.Amount.currency === wallet[iii].currency) {
-    taxRate = wallet[iii].taxRate;
-    }
-    
-}
+                 if (tx.Amount.currency === wallet[iii].currency) {
+                 taxRate = wallet[iii].taxRate;
+                 }
+             }    
+          
+          
+//================ now that we have taxRate added to the transaction, we also calculate the tax_amount
+
+              tax_amount = taxRate * tx.Amount.value;    
 
 
+//================ now we have all the data from the Ripple API and from the Resilience.me-Wallet
+//================ we store that data in the variable TAX_BLOB
+
+         var TAX_DATA = {};
+         TAX_DATA.transaction_id = tx.hash;
+         TAX_DATA.account = tx.Account;
+         TAX_DATA.amount = tx.Amount.value;
+         TAX_DATA.currency = tx.Amount.currency;
+         TAX_DATA.issuer = tx.Amount.issuer;
+         TAX_DATA.destination = tx.Destination;
+         TAX_DATA.taxRate = taxRate;
+         TAX_DATA.tax_amount = tax_amount;
+
+//================ if we only want to filter out the first couple of transactions
+//================ set number of transactions with limit variable
+//================ all transactions that should be sent to resilience.me-server are added to a TAX_BLOB
 
 
-//================ declare_tax ================
+                    if (r <= limit) {
+                        TAX_BLOB[r] = TAX_DATA;
 
-                    tax_amount = taxRate * tx.Amount.value;
+                    }
                     
 
-                    TAX_BLOB.transaction_id = tx.hash;
-                    TAX_BLOB.account = tx.Account;
-                    TAX_BLOB.amount = tx.Amount.value;
-                    TAX_BLOB.currency = tx.Amount.currency;
-                    TAX_BLOB.issuer = tx.Amount.issuer;
-                    TAX_BLOB.destination = tx.Destination;
-                    TAX_BLOB.taxRate = taxRate;
-                    TAX_BLOB.tax_amount = tax_amount;
+
+                    r++;
+                    
+                }//end of if() filter-per-taxRate script
+                
+                   
 
 
-                    //this sets how many transactions to declare_tax for
-                    //this is set with the variable r
-                    if (r <= 10) {
-                        //these declare_tax objects are sent to resilience.me
-                        //output should be sent to resilience.me-server
+
+
+
+            }//end of var i loop
+            
+//================ we now have all the data we need in TAX_BLOB
+//================ this data should be sent to the resilience.me-server
+//================ I will add that script soon
+
+                                    
                         var output = JSON.stringify(TAX_BLOB, null, 2);
                         console.log(output);
-                    }
-                    r++;
+                        //send to resilience.me-server.......
 
 
-               
-               
-                }
+        }).request();//end of Ripple API account_tx request
 
-            }
-
-        }).request();
+                       
 
 
-});
+});//end of remote.connect()
+
+                       
 
 
