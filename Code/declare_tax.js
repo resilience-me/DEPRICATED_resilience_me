@@ -31,31 +31,33 @@ remote.connect(function() {
         'ledger_index_max': -1,
         'limit': 50
     };
-    
-    
+
+
 //================ Create wallet ================
 //should be encoded with ripple-account secret key
-             
+//taxRate is written in decimal, 0.02 means 2%
+
     var wallet = [
         {
         'currency':'RES',
-        'taxRate': '0020000000'
+        'taxRate': 0.02
         },
-        
+
         {
         'currency':'USD',
-        'taxRate': '0004000000'
+        'taxRate': 0.004
         },
-      
+
         {
         'currency':'EUR',
-        'taxRate': '0010000000'
+        'taxRate': 0.01
         },
-   
+
     ];
-    
-    
-     //this holds the transaction data that should be connected with resilience.me
+
+//================ declare_tax BLOB ================
+
+
      var TAX_BLOB = {
          transaction_id: {},
          account: {},
@@ -66,20 +68,23 @@ remote.connect(function() {
          taxRate: {},
          tax_amount: {}
      };
-   
-//================ request account_tx ================
 
-    
+
+//================ declare poignant variables ================
+     var r=0;
+     var taxRate;
+     var tax_amount;
+
+
+//================ account_tx from remote ================
 
     remote.request_account_tx(params)
         .on('success', function(data) {
 
 
-                    //limit how many transactions to declare_tax for
 
-                    var r=0;
-                    
-                    
+
+
 
             for (var i=0; i < data.transactions.length; i++) {
 
@@ -87,56 +92,40 @@ remote.connect(function() {
 
 
 
-//================ wallet.currency ================
+//================ create a string with wallet.currency ================
+
+     var IOU = wallet[0].currency + wallet[1].currency + wallet[2].currency;
 
 
-     var IOU1 = wallet[0].currency;
-     var IOU2 = wallet[1].currency;
-     var IOU3 = wallet[2].currency;
-     var IOU = (IOU1 + ", "  +  IOU2 + ", " + IOU3);
 
 
-             
-   
 
 
-//================ Incoming Payments ================
+//================ filter account_tx by incoming payments and wallet.currency ================
 
                 if (tx.TransactionType === 'Payment' &&  IOU.indexOf(tx.Amount.currency) > -1 && tx.Destination === params.account) {
-                    
 
-                    
-//================ wallet.taxRate ================
-                    //declare variables
-                    var taxRate;
-                    var tax_amount;
 
-                    //filter by currency
-                    if (tx.Amount.currency === IOU1) {
+
+//================ set taxRate ================
+
+                    if (tx.Amount.currency === wallet[0].currency) {
                         taxRate = wallet[0].taxRate;
                     }
 
-                    if (tx.Amount.currency === IOU2) {
+                    if (tx.Amount.currency === wallet[1].currency) {
                         taxRate = wallet[1].taxRate;
                     }
-            
-                    if (tx.Amount.currency === IOU3) {
+
+                    if (tx.Amount.currency === [2].currency) {
                         taxRate = wallet[2].taxRate;
                     }
-                    
-                    //calculate tax_amount
-                       taxRate = parseInt(taxRate, 10) * 0.000000001;
-                       tax_amount = taxRate * tx.Amount.value;
 
-                    //================ declare_tax ================
-                    
-                    //Like anyone can issue IOUs in Ripple, resilience.me lets anyone 
-                    //connect IOUs of any currency to our system.
-                    //resilience.me generates a list of outgoing payments, sign the 
-                    //list of outgoing payments, IF <= (amount * taxRate)
-                    
-                    //connect incoming payments with the resilience network
-                    //(example, haven´t coded yet)
+
+
+//================ declare_tax ================
+
+                    tax_amount = taxRate * tx.Amount.value;
                     
 
                     TAX_BLOB.transaction_id = tx.hash;
@@ -151,41 +140,24 @@ remote.connect(function() {
 
                     //this sets how many transactions to declare_tax for
                     //this is set with the variable r
-                    
-                    
-                    if (r <= 4) {
-                        //send to resilience.me
+                    if (r <= 2) {
                         //these declare_tax objects are sent to resilience.me
-                        //not finished need resilience.me server and resilience.me-lib
+                        //output should be sent to resilience.me-server
                         var output = JSON.stringify(TAX_BLOB, null, 2);
                         console.log(output);
-                        console.log("command: declare_tax");
-                        console.log("connecting to resilience.me...");
-                        console.log("sending data...");                    
-                        console.log("COMPLETE");
-
-
                     }
-                    
                     r++;
 
 
-                    
-                    
-
-
-
+               
+               
                 }
-                
+
             }
 
         }).request();
-        
-       
-        
 
 
-        
 });
 
 
