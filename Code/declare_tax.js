@@ -73,7 +73,8 @@ for (var j = 0; j < wallet.length; j++) {
 
      var TAX_BLOB = [];
      var output = {};
-     
+     var TOTAL_AMOUNT = [];
+     var IOU;
 
 //================ Connect to the Ripple API ================
 
@@ -170,26 +171,61 @@ remote.connect(function() {
 //================ all transactions that should be sent to resilience.me-server 
 //================ are added to the TAX_BLOB that we declared at the top of the script
 
-         TAX_BLOB.push(TAX_DATA);
-                   
-                    
+        TAX_BLOB.push(TAX_DATA);
+        
+//================ we also sum up TOTAL_AMOUNT per currency (for use in script below)
+
+if (TOTAL_AMOUNT[TAX_DATA.currency] === undefined) {
+ TOTAL_AMOUNT[TAX_DATA.currency] = Number(TAX_DATA.amount);
+   
+}
+else {
+TOTAL_AMOUNT[TAX_DATA.currency] += Number(TAX_DATA.amount);
+}
+
+
                     
             }//end of if() filter-per-taxRate script
             
-              
         }//end of var i loop
             
 //======== we now have all the data we need in TAX_BLOB
 //======== this data should be sent to the resilience.me-server
-
-                              
                                     
            output = JSON.stringify(TAX_BLOB, null, 2);
+
+
+
+
 
 //============send to resilience.me-server (script coming soon)
 //the TAX_BLOB JSON output should be sent to the resilience.me server.
 //I´ll code that soon. Now I just console.log it:
-console.log(output);
+
+    console.log(TAX_BLOB);
+
+
+
+//============ swarm-redistribution (script coming soon)
+
+//the resilience.me-server returns unsigned lists of payments
+//one list for each currency that was declared
+//and the script signs them if they don´t exceed total amount taxed * tax_rate
+
+
+//I haven´t coded this yet. I have some example-code below, to get you going.
+//for some reason, TOTAL_AMOUNT.IOU doesn´t work, but TOTAL_AMOUNT.RES does, and IOU[0] = RES 
+    
+     for (var d = 0; d < wallet.length; d++) { 
+   
+         var IOU = wallet[d].currency;
+         console.log(TOTAL_AMOUNT.IOU * wallet[d].taxRate);
+     }   
+ 
+ 
+ 
+ 
+ 
 
            
    }).request();//end of Ripple API account_tx request
