@@ -1,6 +1,6 @@
 //============ resilience.me-server, swarm-redistribution =============
 
-// september 11th, 2014
+// UPDT: september 11th, 2014
 
 // example of how swarm-redistribution works. this example uses path-finding data from Ripple API.
 // this is a path-finding algorithm that renders the network of people that a user is connected to
