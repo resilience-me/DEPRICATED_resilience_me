@@ -1,3 +1,20 @@
+//============ resilience.me-server, swarm-redistribution =============
+
+// september 11th, 2014
+
+// example of how swarm-redistribution works. this example uses path-finding data from Ripple API.
+// this is a path-finding algorithm that renders the network of people that a user is connected to
+// a swarm, the cluster of people that are below a particular account in a hierarchy of transactions
+
+// this script does most of what the swarm-redistribution algorithm should do, but I have not yet developed
+// most of the resilience.me-server functionality, so it lacks a lot of the functions too.
+
+// the resilience.me-server will handle all the data that the swarm-redistribution algorithm uses.
+// a resilience.me-client v0.1 is already developed, and that client sends all the data that the algorithm needs.
+
+
+// WHAT THIS SCRIPT DOES:
+
 // looks at a ripple-account, and generates a list with all 
 // accounts that are connected to that account through a hierarchical line of debt. 
 // It creates a list of all accounts that have issued IOUs to that account, and does 
