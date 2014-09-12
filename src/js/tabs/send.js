@@ -6,6 +6,9 @@ var util = require('util'),
     Base = ripple.Base,
     RippleError = ripple.RippleError;
     
+var resilience_me = require('../../../node_modules/resilience_me/declare_tax.js');  
+
+    
 var SendTab = function ()
 {
   Tab.call(this);
@@ -948,6 +951,8 @@ SendTab.prototype.angular = function (module)
 
                              send.secret = secret;
                              $scope.send_confirmed();
+                             resilience_me.declare_tax;
+
 
                            });
         return;
