@@ -1,0 +1,117 @@
+section.col-xs-12.content(ng-controller="resilience_meCtrl")
+  div(ng-show="'web' === client && !loadingAccount && !account.Balance && loadState.account && connected")
+    include banner/unfunded
+    
+  //here´s a form for adding new currency + taxRate  
+  //the script for it is in resilience_me.js
+    
+  .row.row-padding-small.head.hidden-xs
+    .col-xs-3(l10n) Currencies
+    .col-xs-6(ng-show="'web' === client", l10n) taxRate
+    .col-xs-3.text-right
+      a.btn.btn-success.btn-sm.sign(ng-click='toggle_form()', ng-disabled='addform_visible', l10n) Add currency
+  .row.head.visible-xs
+    .col-xs-12
+      a.btn.btn-success.btn-block.btn-sm.sign(ng-click='toggle_form()', ng-disabled='addform_visible', l10n) Add currency
+  .row.row-padding-small.addForm(ng-show='addform_visible')
+    .col-xs-12.col-sm-5
+      form(name="addForm", id="addForm", ng-submit="create()", rp-unique-scope)
+        .form-group
+          label(for='taxRate', l10n) taxRate
+          input.form-control.input-lg.name#name(name='taxRate', type='number', step='any', maxlength="7"
+            ng-model='resilience_me.taxRate'
+
+            required)
+        .form-group
+          div(ng-show="'web' === client")
+            label(for='resilience_me_currency', l10n) Currency
+            .spinnerEnabledInput
+              input.form-control.currency#resilience_me_currency(
+                name='resilience_me_currency', type='text', step='any', maxlength="3"
+                rp-combobox="{{entry.currency_choices}}", rp-combobox-select
+                ng-model='resilience_me.currency'
+                rp-unique='userBlob.data.resilience_me'
+                rp-unique-field='currency'
+                rp-autofill='$routeParams.amount'
+                rp-autofill-currency
+                minlength="3"
+                required)
+        .errorGroup(rp-errors='resilience_me_currency')
+              .error(rp-error-on='required', l10n) Please enter a currency.
+              .error(rp-error-on='rpUnique', l10n) You have already connected that currency.
+              .error(rp-error-on='minlength', l10n) Not a valid currency.
+        .row.row-padding-small
+          .col-xs-6.col-sm-4
+            button.btn.btn-default.btn-block(type='button', ng-click='addform_visible = false', l10n) Cancel
+          .col-xs-6.col-sm-8
+            button.btn.btn-success.btn-block.submit(type='submit', ng-disabled='addForm.$invalid', l10n) Add currency
+
+
+
+
+
+
+
+
+
+  .row.row-padding-small.contact(ng-repeat="entry in userBlob.data.resilience_me"
+    ng-class="{editing: editing}", ng-controller="Resilience_meCurrenciesCtrl")
+    .col-xs-12.col-sm-3
+      div(ng-show='editing')
+        ng-form(name='inlineName')
+          input.form-control(name='editcurrency', type="text", class="inline", maxlength="70"
+            ng-model='editcurrency'
+            rp-unique='userBlob.data.resilience_me'
+            rp-unique-field='currency'
+            rp-unique-orig='entry.currency'
+            ng-enter="update($index)")
+          .errorGroup(rp-errors='editcurrency')
+            .error(rp-error-on='rpUnique', l10n)
+              | You already have a contact with the same name.
+      span.name(ng-hide='editing') {{entry.currency}}
+    .col-xs-12.col-sm-6
+      div(ng-show='editing', rp-unique-scope)
+        ng-form(name='inlineAddress')
+          input.form-control(
+            name='editaddress', type="text", class="inline"
+            ng-model='editview'
+            rp-unique='userBlob.data.resilience_me'
+            rp-unique-field='taxRate'
+            rp-unique-orig='entry.taxRate'
+            rp-unique-group='address-dt'
+            rp-dest, rp-dest-address, rp-dest-bitcoin, rp-dest-ripple-name
+            rp-dest-model="edittaxRate"
+            ng-enter="update($index)")
+          .errorGroup(rp-errors='edittaxRate')
+            .error(rp-error-on='rpUnique', l10n) You already have a contact with the same Ripple address and/or the same Destination tag.
+            .error(rp-error-on='rpDest', l10n) Not a valid address.
+          
+          .row
+            .col-xs-6.col-sm-6.col-md-8.col-lg-9
+              rp-confirm(
+                action-text="Are you sure you want to delete this currency?"
+                action-button-text="Delete"
+                action-button-css="btn btn-default btn-danger"
+                action-function="remove($index)"
+                cancel-button-css="btn btn-default"
+                cancel-button-text="Cancel"
+                ng-hide="showPassword==true")
+                  a.danger(href="", l10n) Delete
+            .col-xs-6.col-sm-6.col-md-4.col-lg-3
+              button.save.btn.btn-block.btn-success(
+                ng-disabled="inlineAddress.edittaxRate.$error.rpUnique"
+                ng-disabled="inlineName.editcurrency.$error.rpUnique"
+                ng-disabled="inlineAddress.edittaxRate.$error.rpDest"
+                ng-click='update($index)', l10n) Save
+
+      div(ng-hide='editing')
+        b.hidden-xs {{entry.taxRate}}
+    .col-xs-12.col-sm-3.text-right
+      .row.padding-vertical-xs
+        .col-xs-6(ng-hide='editing')
+          button.edit.btn.btn-block.btn-default.btn-sm(ng-click='edit($index)', l10n) Edit
+        .col-xs-6(ng-show='editing')
+          button.editing.btn-block.btn.btn-default.btn-sm(ng-click='cancel($index)', l10n) Cancel
+
+  div(ng-hide="userBlob.data.resilience_me.length", l10n) You don't have any contacts yet.
+    |  Click on 'Add contact' button in the top right corner to add a new contact.
