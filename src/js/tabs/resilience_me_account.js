@@ -55,11 +55,12 @@ resilience_meTab.prototype.angular = function (module) {
     $scope.create = function ()
     {
       var resilience_me = {
-        currency: $scope.resilience_me.currency,
-        taxRate: $scope.resilience_me.taxRate
+        currency: $scope.resilience_me.currency.toUpperCase(),
+        taxRate: $scope.resilience_me.taxRate / 100
       };
       
       
+
     /**
      * Create a string with all currencies
      */
@@ -96,7 +97,7 @@ resilience_meTab.prototype.angular = function (module) {
       {
         $scope.editing = true;
         $scope.editcurrency = $scope.entry.currency;
-        $scope.edittaxRate = $scope.entry.taxRate;
+        $scope.edittaxRate = $scope.entry.taxRate *100;
       };
 
       /**
@@ -122,14 +123,20 @@ resilience_meTab.prototype.angular = function (module) {
 
           var entry = {
             currency: $scope.editcurrency,
-            taxRate: $scope.edittaxRate,
-            currency_choices: IOUs
-            
+            taxRate: $scope.edittaxRate *100
+
+          };
+          
+          //one more time because code sucks
+          var update = {
+            currency: $scope.editcurrency,
+            taxRate: $scope.edittaxRate
+
           };
 
           // Update blob
-          $scope.userBlob.filter('/resilience_me', 'currency', $scope.entry.currency,
-                                 'extend', '', entry);
+          $scope.userBlob.filter('/resilience_me', 'currency', $scope.update.currency,
+                                 'extend', '', update);
 
           $scope.editing = false;
         }
